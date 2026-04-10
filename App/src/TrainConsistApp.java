@@ -5,22 +5,35 @@ public class TrainConsistApp {
 
     public static void main(String[] args) {
 
-        // Display welcome banner
-        System.out.println("==================================");
-        System.out.println("   Train Consist Management App   ");
-        System.out.println("==================================");
+        System.out.println("=== UC2: Add Passenger Bogies to Train ===");
 
-        // Initialize empty train consist
-        List<String> trainConsist = new ArrayList<>();
+        // Create ArrayList for passenger bogies
+        List<String> passengerBogies = new ArrayList<>();
 
-        // Display initialization details
-        System.out.println("\nTrain initialized successfully...");
-        System.out.println("Initial Bogie Count: " + trainConsist.size());
+        // Add bogies
+        passengerBogies.add("Sleeper");
+        passengerBogies.add("AC Chair");
+        passengerBogies.add("First Class");
 
-        // Display current consist
-        System.out.println("Current Train Consist: " + trainConsist);
+        // Display after adding
+        System.out.println("\nAfter Adding Bogies:");
+        System.out.println("Passenger Bogies: " + passengerBogies);
 
-        // Ready message
-        System.out.println("\nSystem ready for operations...");
+        // Remove one bogie (AC Chair)
+        passengerBogies.remove("AC Chair");
+
+        System.out.println("\nAfter Removing 'AC Chair':");
+        System.out.println("Passenger Bogies: " + passengerBogies);
+
+        // Check if Sleeper exists
+        System.out.println("\nChecking if 'Sleeper' exists:");
+        boolean exists = passengerBogies.contains("Sleeper");
+        System.out.println("Contains Sleeper? " + exists);
+
+        // Final state
+        System.out.println("\nFinal Train Passenger Consist:");
+        System.out.println(passengerBogies);
+
+        System.out.println("\nUC2 execution completed successfully...");
     }
 }
