@@ -1,30 +1,42 @@
 package main;
 
-import model.Bogie;
-import exception.InvalidCapacityException;
+import model.GoodsBogie;
+import util.SafetyChecker;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        List<Bogie> bogies = new ArrayList<>();
+        List<GoodsBogie> bogies = Arrays.asList(
+                new GoodsBogie("G1", "Cylindrical", "Oil"),     // ✅ valid
+                new GoodsBogie("G2", "Rectangular", "Coal"),    // ✅ valid
+                new GoodsBogie("G3", "Cylindrical", "Coal"),    // ❌ invalid
+                new GoodsBogie("G4", "Rectangular", "Petrol")   // ❌ invalid
+        );
 
-        try {
-            bogies.add(new Bogie("B1", "Sleeper", 72));   // ✅ valid
-            bogies.add(new Bogie("B2", "AC Chair", 60));  // ✅ valid
-            bogies.add(new Bogie("B3", "Sleeper", -10));  // ❌ invalid
-            bogies.add(new Bogie("B4", "Goods", 0));      // ✅ allowed (goods)
-        }
-        catch (InvalidCapacityException e) {
-            System.out.println("❌ Exception Caught: " + e.getMessage());
-        }
+        System.out.println("🚆 Safe Cargo Assignment:\n");
 
-        System.out.println("\n🚆 Valid Bogies in System:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        for (GoodsBogie bogie : bogies) {
+
+            try {
+                // risky operation
+                SafetyChecker.validateSafety(bogie);
+
+                System.out.println("✅ Assigned safely: " + bogie);
+
+            } catch (RuntimeException e) {
+
+                System.out.println("❌ Error: " + e.getMessage());
+
+            } finally {
+
+                // always runs
+                System.out.println("🔄 Checked bogie: " + bogie.getId());
+                System.out.println("----------------------");
+            }
         }
     }
 }
