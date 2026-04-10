@@ -1,25 +1,36 @@
 package main;
 
-import java.util.Arrays;
+import model.Bogie;
+import util.SearchUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // Step 1: Create array of bogie names
-        String[] bogieNames = {"B3", "B1", "B4", "B2"};
+        List<Bogie> bogies = new ArrayList<>();
 
-        System.out.println("🚆 Before Sorting:");
-        for (String name : bogieNames) {
-            System.out.println(name);
+        try {
+            bogies.add(new Bogie("B1", "Sleeper", 72));
+            bogies.add(new Bogie("B2", "AC Chair", 60));
+            bogies.add(new Bogie("B3", "Sleeper", 80));
+            bogies.add(new Bogie("B4", "AC Chair", 50));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
-        // Step 2: Sort using Arrays.sort()
-        Arrays.sort(bogieNames);
+        String searchId = "B3";
 
-        System.out.println("\n🚆 After Sorting:");
-        for (String name : bogieNames) {
-            System.out.println(name);
+        System.out.println("🔍 Searching for Bogie ID: " + searchId);
+
+        Bogie result = SearchUtil.findById(bogies, searchId);
+
+        if (result != null) {
+            System.out.println("✅ Found: " + result);
+        } else {
+            System.out.println("❌ Bogie not found");
         }
     }
 }
