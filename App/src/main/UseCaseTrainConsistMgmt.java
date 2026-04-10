@@ -1,37 +1,25 @@
 package main;
 
-import model.Bogie;
-import util.BubbleSortUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        List<Bogie> bogies = new ArrayList<>();
-
-        try {
-            bogies.add(new Bogie("B1", "Sleeper", 72));
-            bogies.add(new Bogie("B2", "AC Chair", 60));
-            bogies.add(new Bogie("B3", "Sleeper", 80));
-            bogies.add(new Bogie("B4", "AC Chair", 50));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        // Step 1: Create array of bogie names
+        String[] bogieNames = {"B3", "B1", "B4", "B2"};
 
         System.out.println("🚆 Before Sorting:");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        for (String name : bogieNames) {
+            System.out.println(name);
         }
 
-        // Apply Bubble Sort
-        BubbleSortUtil.sortByCapacity(bogies);
+        // Step 2: Sort using Arrays.sort()
+        Arrays.sort(bogieNames);
 
-        System.out.println("\n🚆 After Sorting (by Capacity):");
-        for (Bogie b : bogies) {
-            System.out.println(b);
+        System.out.println("\n🚆 After Sorting:");
+        for (String name : bogieNames) {
+            System.out.println(name);
         }
     }
 }
