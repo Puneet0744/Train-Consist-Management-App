@@ -1,55 +1,30 @@
 package main;
 
 import model.Bogie;
+import exception.InvalidCapacityException;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // Step 1: Create large dataset
         List<Bogie> bogies = new ArrayList<>();
 
-        for (int i = 1; i <= 100000; i++) {
-            bogies.add(new Bogie("B" + i, "Sleeper", 72));
+        try {
+            bogies.add(new Bogie("B1", "Sleeper", 72));   // ✅ valid
+            bogies.add(new Bogie("B2", "AC Chair", 60));  // ✅ valid
+            bogies.add(new Bogie("B3", "Sleeper", -10));  // ❌ invalid
+            bogies.add(new Bogie("B4", "Goods", 0));      // ✅ allowed (goods)
+        }
+        catch (InvalidCapacityException e) {
+            System.out.println("❌ Exception Caught: " + e.getMessage());
         }
 
-        // ================================
-        // 🔴 LOOP APPROACH
-        // ================================
-        long startLoop = System.nanoTime();
-
-        int totalSeatsLoop = 0;
+        System.out.println("\n🚆 Valid Bogies in System:");
         for (Bogie b : bogies) {
-            totalSeatsLoop += b.getSeatCapacity();
+            System.out.println(b);
         }
-
-        long endLoop = System.nanoTime();
-        long timeLoop = endLoop - startLoop;
-
-        // ================================
-        // 🟢 STREAM APPROACH
-        // ================================
-        long startStream = System.nanoTime();
-
-        int totalSeatsStream = bogies.stream()
-                .map(Bogie::getSeatCapacity)
-                .reduce(0, Integer::sum);
-
-        long endStream = System.nanoTime();
-        long timeStream = endStream - startStream;
-
-        // ================================
-        // 📊 OUTPUT
-        // ================================
-        System.out.println("🚆 Performance Comparison:\n");
-
-        System.out.println("Loop Total Seats: " + totalSeatsLoop);
-        System.out.println("Loop Time (ns): " + timeLoop);
-
-        System.out.println("\nStream Total Seats: " + totalSeatsStream);
-        System.out.println("Stream Time (ns): " + timeStream);
     }
 }

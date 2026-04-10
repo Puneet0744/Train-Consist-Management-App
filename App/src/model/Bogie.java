@@ -1,11 +1,18 @@
 package model;
 
+import exception.InvalidCapacityException;
+
 public class Bogie {
     private String id;
     private String type;
-    private int seatCapacity; // NEW
+    private int seatCapacity;
 
-    public Bogie(String id, String type, int seatCapacity) {
+    public Bogie(String id, String type, int seatCapacity) throws InvalidCapacityException {
+
+        if (seatCapacity <= 0 && !type.equalsIgnoreCase("Goods")) {
+            throw new InvalidCapacityException("Invalid seat capacity for bogie: " + id);
+        }
+
         this.id = id;
         this.type = type;
         this.seatCapacity = seatCapacity;
