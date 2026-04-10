@@ -1,42 +1,37 @@
 package main;
 
-import model.GoodsBogie;
-import util.SafetyChecker;
+import model.Bogie;
+import util.BubbleSortUtil;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        List<GoodsBogie> bogies = Arrays.asList(
-                new GoodsBogie("G1", "Cylindrical", "Oil"),     // ✅ valid
-                new GoodsBogie("G2", "Rectangular", "Coal"),    // ✅ valid
-                new GoodsBogie("G3", "Cylindrical", "Coal"),    // ❌ invalid
-                new GoodsBogie("G4", "Rectangular", "Petrol")   // ❌ invalid
-        );
+        List<Bogie> bogies = new ArrayList<>();
 
-        System.out.println("🚆 Safe Cargo Assignment:\n");
+        try {
+            bogies.add(new Bogie("B1", "Sleeper", 72));
+            bogies.add(new Bogie("B2", "AC Chair", 60));
+            bogies.add(new Bogie("B3", "Sleeper", 80));
+            bogies.add(new Bogie("B4", "AC Chair", 50));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
-        for (GoodsBogie bogie : bogies) {
+        System.out.println("🚆 Before Sorting:");
+        for (Bogie b : bogies) {
+            System.out.println(b);
+        }
 
-            try {
-                // risky operation
-                SafetyChecker.validateSafety(bogie);
+        // Apply Bubble Sort
+        BubbleSortUtil.sortByCapacity(bogies);
 
-                System.out.println("✅ Assigned safely: " + bogie);
-
-            } catch (RuntimeException e) {
-
-                System.out.println("❌ Error: " + e.getMessage());
-
-            } finally {
-
-                // always runs
-                System.out.println("🔄 Checked bogie: " + bogie.getId());
-                System.out.println("----------------------");
-            }
+        System.out.println("\n🚆 After Sorting (by Capacity):");
+        for (Bogie b : bogies) {
+            System.out.println(b);
         }
     }
 }
