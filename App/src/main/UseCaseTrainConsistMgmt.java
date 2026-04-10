@@ -1,32 +1,55 @@
 package main;
 
-import model.GoodsBogie;
-import util.SafetyChecker;
+import model.Bogie;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // Create goods bogies
-        List<GoodsBogie> goodsBogies = Arrays.asList(
-                new GoodsBogie("G1", "Cylindrical", "Oil"),     // ✅ Valid
-                new GoodsBogie("G2", "Rectangular", "Coal"),    // ✅ Valid
-                new GoodsBogie("G3", "Cylindrical", "Coal"),    // ❌ Invalid
-                new GoodsBogie("G4", "Rectangular", "Petrol")   // ❌ Invalid
-        );
+        // Step 1: Create large dataset
+        List<Bogie> bogies = new ArrayList<>();
 
-        System.out.println("🚆 Safety Compliance Check:\n");
-
-        for (GoodsBogie bogie : goodsBogies) {
-
-            if (SafetyChecker.isSafe(bogie)) {
-                System.out.println("✅ SAFE: " + bogie);
-            } else {
-                System.out.println("❌ UNSAFE: " + bogie);
-            }
+        for (int i = 1; i <= 100000; i++) {
+            bogies.add(new Bogie("B" + i, "Sleeper", 72));
         }
+
+        // ================================
+        // 🔴 LOOP APPROACH
+        // ================================
+        long startLoop = System.nanoTime();
+
+        int totalSeatsLoop = 0;
+        for (Bogie b : bogies) {
+            totalSeatsLoop += b.getSeatCapacity();
+        }
+
+        long endLoop = System.nanoTime();
+        long timeLoop = endLoop - startLoop;
+
+        // ================================
+        // 🟢 STREAM APPROACH
+        // ================================
+        long startStream = System.nanoTime();
+
+        int totalSeatsStream = bogies.stream()
+                .map(Bogie::getSeatCapacity)
+                .reduce(0, Integer::sum);
+
+        long endStream = System.nanoTime();
+        long timeStream = endStream - startStream;
+
+        // ================================
+        // 📊 OUTPUT
+        // ================================
+        System.out.println("🚆 Performance Comparison:\n");
+
+        System.out.println("Loop Total Seats: " + totalSeatsLoop);
+        System.out.println("Loop Time (ns): " + timeLoop);
+
+        System.out.println("\nStream Total Seats: " + totalSeatsStream);
+        System.out.println("Stream Time (ns): " + timeStream);
     }
 }
