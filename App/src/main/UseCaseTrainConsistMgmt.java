@@ -1,46 +1,32 @@
 package main;
 
-import model.Bogie;
-import util.Validator;
+import model.GoodsBogie;
+import util.SafetyChecker;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // UC11: Regex Validation
+        // Create goods bogies
+        List<GoodsBogie> goodsBogies = Arrays.asList(
+                new GoodsBogie("G1", "Cylindrical", "Oil"),     // ✅ Valid
+                new GoodsBogie("G2", "Rectangular", "Coal"),    // ✅ Valid
+                new GoodsBogie("G3", "Cylindrical", "Coal"),    // ❌ Invalid
+                new GoodsBogie("G4", "Rectangular", "Petrol")   // ❌ Invalid
+        );
 
-        String trainId = "TRN-1234";
-        String cargoCode = "CG-456";
+        System.out.println("🚆 Safety Compliance Check:\n");
 
-        System.out.println("🚆 Validation Results:\n");
+        for (GoodsBogie bogie : goodsBogies) {
 
-        // Validate Train ID
-        if (Validator.isValidTrainId(trainId)) {
-            System.out.println("✅ Valid Train ID: " + trainId);
-        } else {
-            System.out.println("❌ Invalid Train ID: " + trainId);
+            if (SafetyChecker.isSafe(bogie)) {
+                System.out.println("✅ SAFE: " + bogie);
+            } else {
+                System.out.println("❌ UNSAFE: " + bogie);
+            }
         }
-
-        // Validate Cargo Code
-        if (Validator.isValidCargoCode(cargoCode)) {
-            System.out.println("✅ Valid Cargo Code: " + cargoCode);
-        } else {
-            System.out.println("❌ Invalid Cargo Code: " + cargoCode);
-        }
-
-        // ❌ Test invalid cases (for demo)
-        String invalidTrain = "TRAIN12";
-        String invalidCargo = "123-CG";
-
-        System.out.println("\n🔍 Testing Invalid Inputs:\n");
-
-        System.out.println(invalidTrain + " → " +
-                (Validator.isValidTrainId(invalidTrain) ? "Valid" : "Invalid"));
-
-        System.out.println(invalidCargo + " → " +
-                (Validator.isValidCargoCode(invalidCargo) ? "Valid" : "Invalid"));
     }
 }
