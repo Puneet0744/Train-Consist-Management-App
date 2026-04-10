@@ -1,6 +1,7 @@
 package main;
 
 import model.Bogie;
+import util.Validator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,31 +10,37 @@ public class UseCaseTrainConsistMgmt {
 
     public static void main(String[] args) {
 
-        // Step 1: Create bogies with seat capacity
-        List<Bogie> bogies = Arrays.asList(
-                new Bogie("B1", "Sleeper", 72),
-                new Bogie("B2", "AC Chair", 60),
-                new Bogie("B3", "Sleeper", 72),
-                new Bogie("B4", "Goods", 0),
-                new Bogie("B5", "AC Chair", 60),
-                new Bogie("B6", "Goods", 0)
-        );
+        // UC11: Regex Validation
 
-        // Step 2: UC9 (Grouping)
-        Map<String, List<Bogie>> grouped =
-                bogies.stream()
-                        .collect(Collectors.groupingBy(Bogie::getType));
+        String trainId = "TRN-1234";
+        String cargoCode = "CG-456";
 
-        System.out.println("🚆 Grouped Bogies:");
-        grouped.forEach((type, list) ->
-                System.out.println(type + " → " + list)
-        );
+        System.out.println("🚆 Validation Results:\n");
 
-        // Step 3: UC10 (Reduce - Total Seats)
-        int totalSeats = bogies.stream()
-                .map(Bogie::getSeatCapacity)
-                .reduce(0, Integer::sum);
+        // Validate Train ID
+        if (Validator.isValidTrainId(trainId)) {
+            System.out.println("✅ Valid Train ID: " + trainId);
+        } else {
+            System.out.println("❌ Invalid Train ID: " + trainId);
+        }
 
-        System.out.println("\n🎯 Total Seats in Train: " + totalSeats);
+        // Validate Cargo Code
+        if (Validator.isValidCargoCode(cargoCode)) {
+            System.out.println("✅ Valid Cargo Code: " + cargoCode);
+        } else {
+            System.out.println("❌ Invalid Cargo Code: " + cargoCode);
+        }
+
+        // ❌ Test invalid cases (for demo)
+        String invalidTrain = "TRAIN12";
+        String invalidCargo = "123-CG";
+
+        System.out.println("\n🔍 Testing Invalid Inputs:\n");
+
+        System.out.println(invalidTrain + " → " +
+                (Validator.isValidTrainId(invalidTrain) ? "Valid" : "Invalid"));
+
+        System.out.println(invalidCargo + " → " +
+                (Validator.isValidCargoCode(invalidCargo) ? "Valid" : "Invalid"));
     }
 }
