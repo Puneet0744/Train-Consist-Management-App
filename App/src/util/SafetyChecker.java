@@ -4,23 +4,25 @@ import model.GoodsBogie;
 
 public class SafetyChecker {
 
-    public static boolean isSafe(GoodsBogie bogie) {
+    public static void validateSafety(GoodsBogie bogie) {
 
         String shape = bogie.getShape();
         String cargo = bogie.getCargo();
 
-        // Rule 1: Cylindrical → Only liquids
+        // Cylindrical → liquids only
         if (shape.equalsIgnoreCase("Cylindrical")) {
-            return cargo.equalsIgnoreCase("Oil") ||
-                    cargo.equalsIgnoreCase("Petrol");
+            if (!(cargo.equalsIgnoreCase("Oil") ||
+                    cargo.equalsIgnoreCase("Petrol"))) {
+                throw new RuntimeException("Unsafe cargo for Cylindrical bogie: " + bogie);
+            }
         }
 
-        // Rule 2: Rectangular → Solid goods
-        if (shape.equalsIgnoreCase("Rectangular")) {
-            return cargo.equalsIgnoreCase("Coal") ||
-                    cargo.equalsIgnoreCase("Steel");
+        // Rectangular → solids only
+        else if (shape.equalsIgnoreCase("Rectangular")) {
+            if (!(cargo.equalsIgnoreCase("Coal") ||
+                    cargo.equalsIgnoreCase("Steel"))) {
+                throw new RuntimeException("Unsafe cargo for Rectangular bogie: " + bogie);
+            }
         }
-
-        return false;
     }
 }
